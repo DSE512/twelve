@@ -20,31 +20,23 @@ class Images:
 
     def __init__(self, root="img"):
         self.root = Path(root)
-        self.check_download()
-        self.load_data()
+        self._check_download()
 
     def __repr__(self):
         return f"Images(root={self.root})"
 
-    def check_download(self):
+    def load_data(self):
+        """Load the saved images"""
+        path = self.root.glob("**/*.jpg")
+        imgs = [x for x in path if x.is_file()]
+        return [Image.open(img) for img in imgs]
+
+    def _check_download(self):
         """Check if the data has been downloaded"""
         if not self.root.exists():
             self.download()
 
-    def download(self):
-        """Download all images from unsplash"""
-        self.root.mkdir()
-
-        print(f"Downloading images from unsplash...")
-        start = time.perf_counter()
-
-        for url in self.urls:
-            self.download_image(url)
-
-        end = time.perf_counter()
-        print(f"Finished downloading in {end-start:.5} second(s).")
-
-    def download_image(self, url):
+    def _download_image(self, url):
         """Download an individual image"""
         start = time.perf_counter()
         imgbytes = requests.get(url).content
@@ -58,9 +50,16 @@ class Images:
         end = time.perf_counter()
         print(f"Downloaded {img_name} in {end-start:.5} second(s).")
 
-    def load_data(self):
-        """Load the saved images"""
-        path = self.root.glob("**/*.jpg")
-        imgs = [x for x in path if x.is_file()]
-        self.data = [Image.open(img) for img in imgs]
+    def download(self):
+        """Download all images from unsplash"""
+        self.root.mkdir()
+
+        print(f"Downloading images from unsplash...")
+        start = time.perf_counter()
+
+        for url in self.urls:
+            self.download_image(url)
+
+        end = time.perf_counter()
+        print(f"Finished downloading in {end-start:.5} second(s).")
 

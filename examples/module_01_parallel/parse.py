@@ -1,35 +1,38 @@
-import random
-import multiprocessing as mp
+import time
+
+from pathlib import Path
+from multiprocessing import Pool
 
 
-def random_integer(output):
-    """Generate a random integer in [0, 9]
+def read_file(path):
+    """Read in a text file
 
     Args:
-        output: multiprocessing queue
+        path: path to the text.
     """
-    integer = random.randint(0, 9)
-    output.put(integer)
+    start = time.perf_counter()
+
+    with open(path, 'r') as f:
+        text = f.readline()
+
+    end = time.perf_counter()
+    print(f"Read file in: {end-start:.4} seconds.")
+
+    return text
 
 
 def main():
-    output = mp.Queue()
+    start = time.perf_counter()
 
-    processes = []
-    for _ in range(4):
-        processes.append(
-            # Create a process that wraps our function
-            mp.Process(target=random_integer, args=(output,))
-        )
+    paths = Path("data").glob("**/*.txt")
+    files = [x for x in paths if x.is_file()]
 
-    for proc in processes:
-        proc.start()
+    pool = Pool(4)
+    results = pool.map(read_file, files)
+    pool.close()
 
-    for proc in processes:
-        proc.join()
-
-    results = [output.get() for proc in processes]
-    print(results)
+    end = time.perf_counter()
+    print(f"Total time: {end-start} seconds.")
 
 
 if __name__=="__main__":

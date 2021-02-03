@@ -1,7 +1,6 @@
 import time
 
 from pathlib import Path
-from multiprocessing import Pool
 
 
 def read_file(path):

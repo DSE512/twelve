@@ -19,24 +19,31 @@ class Images:
         "https://images.unsplash.com/photo-1528360983277-13d401cdc186",
     ]
 
-    def __init__(self, savepath="img"):
-        self.savepath = Path(savepath)
+    def __init__(self, root="img"):
+        self.root = Path(root)
         self.check_download()
         self.load_data()
 
     def __repr__(self):
-        return f"Images(savepath={self.savepath})"
+        return f"Images(root={self.root})"
 
     def check_download(self):
         """Check if the data has been downloaded"""
-        if not self.savepath.exists():
+        if not self.root.exists():
             self.download()
 
     def download(self):
         """Download all images from unsplash"""
-        self.savepath.mkdir()
+        self.root.mkdir()
+
+        print(f"Downloading images from unsplash...")
+        start = time.perf_counter()
+
         for url in self.urls:
             self.download_image(url)
+
+        end = time.perf_counter()
+        print(f"Finished downloading in {end-start:.5} second(s).")
 
     def download_image(self, url):
         """Download an individual image"""
@@ -44,7 +51,7 @@ class Images:
         imgbytes = requests.get(url).content
         img_name = Path(url).name
         img_name = f'{img_name}.jpg'
-        savepath = self.savepath.joinpath(img_name)
+        savepath = self.root.joinpath(img_name)
 
         with open(savepath, 'wb') as f:
             f.write(imgbytes)
@@ -53,8 +60,8 @@ class Images:
         print(f"Downloaded {img_name} in {end-start:.5} second(s).")
 
     def load_data(self):
-        """"""
-        path = self.savepath.glob("**/*.jpg")
+        """Load all of the images"""
+        path = self.root.glob("**/*.jpg")
         imgs = [x for x in path if x.is_file()]
         self.data = [Image.open(img) for img in imgs]
 

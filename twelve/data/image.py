@@ -16,6 +16,12 @@ class Images:
         "https://images.unsplash.com/photo-1611401138560-d4f24d0231db",
         "https://images.unsplash.com/photo-1577165216284-9d38f657975d",
         "https://images.unsplash.com/photo-1528360983277-13d401cdc186",
+        "https://images.unsplash.com/photo-1599740746781-315ed467db0a",
+        "https://images.unsplash.com/photo-1575315755495-963011c26509",
+        "https://images.unsplash.com/photo-1595161696010-b3a866b31ee4",
+        "https://images.unsplash.com/photo-1595161696730-2b02f78e68ed",
+        "https://images.unsplash.com/photo-1595161610061-af4551e0d9f4",
+        "https://images.unsplash.com/photo-1579964459204-3bdff32da13c",
     ]
 
     def __init__(self, root="img"):
@@ -58,7 +64,7 @@ class Images:
         start = time.perf_counter()
 
         for url in self.urls:
-            self.download_image(url)
+            self._download_image(url)
 
         end = time.perf_counter()
         print(f"Finished downloading in {end-start:.5} second(s).")

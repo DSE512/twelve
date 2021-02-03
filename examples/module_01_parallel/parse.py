@@ -13,7 +13,7 @@ def read_file(path):
     start = time.perf_counter()
 
     with open(path, 'r') as f:
-        text = f.readline()
+        text = f.readlines()
 
     end = time.perf_counter()
     print(f"Read file in: {end-start:.4} seconds.")

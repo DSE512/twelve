@@ -15,7 +15,7 @@ def snooze(seconds):
     """
     print(f"Sleeping for {seconds} seconds.")
     time.sleep(seconds)
-    return f" Slept for {seconds} seconds"
+    return f"Slept for {seconds} seconds"
 
 
 def main():
@@ -25,7 +25,7 @@ def main():
         seconds = [3, 4, 1, 2]
         futs = [executor.submit(snooze, sec) for sec in seconds]
 
-    print(f"\nResults from executor:")
+    print(f"\nResults from executor:\n")
     for fut in futures.as_completed(futs):
         print(fut.result())
 

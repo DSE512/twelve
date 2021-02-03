@@ -1,4 +1,3 @@
-""""""""
 import time
 import requests
 
@@ -60,7 +59,7 @@ class Images:
         print(f"Downloaded {img_name} in {end-start:.5} second(s).")
 
     def load_data(self):
-        """Load all of the images"""
+        """Load the saved images"""
         path = self.root.glob("**/*.jpg")
         imgs = [x for x in path if x.is_file()]
         self.data = [Image.open(img) for img in imgs]

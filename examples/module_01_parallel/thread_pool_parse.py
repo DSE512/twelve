@@ -32,8 +32,7 @@ def main():
 
     print(f"\nResults from executor:\n")
     for fut in futs:
-        num_lines = len(fut)
-        print(f"File has {num_lines} number of lines")
+        print(f"File has {len(fut)} number of lines")
 
     end = time.perf_counter()
     print(f"Total time: {end-start} seconds.")

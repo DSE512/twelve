@@ -9,4 +9,5 @@
 - [Thread Pools](module_01_parallel/thread_pool.py)
 - [Multiprocessing](module_01_parallel/multiprocess.py)
 - [I/O Serial](module_01_parallel/parse_serial.py)
+- [I/O Thread Pool](module_01_parallel/thread_pool_parse.py)
 - [I/O Multiprcessing](module_01_parallel/parse.py)

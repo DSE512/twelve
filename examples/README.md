@@ -7,3 +7,4 @@
 - [Serial Python](module_01_parallel/serial.py)
 - [Threading](module_01_parallel/thread.py)
 - [Multiprocessing](module_01_parallel/multiprocess.py)
+- [I/O Multiprcessing](module_01_parallel/parse.py)

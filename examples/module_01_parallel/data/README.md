@@ -1,4 +1,4 @@
-<h2 align="center">War and Peace</h2>
+<h2 align="center">Leo Tolstoy's War and Peace</h2>
 
 A few copies of Leo Tolstoy's War and Peace to be used to compare parsing the text files 
 [serially](../parse_serial.py) vs parsing with [multiple processes](../parse.py). Technically, 

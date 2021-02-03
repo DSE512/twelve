@@ -10,7 +10,6 @@ def snooze():
 def main():
     start = time.perf_counter()
 
-    threads = []
     for _ in range(4):
         snooze()
 

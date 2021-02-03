@@ -25,7 +25,6 @@ def main():
 
     paths = Path("data").glob("**/*.txt")
     files = [x for x in paths if x.is_file()]
-
     results = [read_file(x) for x in files]
 
     end = time.perf_counter()

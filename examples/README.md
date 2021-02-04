@@ -11,3 +11,4 @@
 - [I/O Serial](module_01_parallel/parse_serial.py)
 - [I/O Thread Pool](module_01_parallel/thread_pool_parse.py)
 - [I/O Multiprcessing](module_01_parallel/parse.py)
+- [I/O Serial Images](module_01_parallel/serial_images.py)

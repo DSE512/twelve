@@ -1,3 +1,13 @@
+"""
+hello.py
+
+A Hello world for MPI programs.
+
+Usage:
+mpirun -n <procs> python hello.py
+
+where <procs> is an integer number of processes.
+"""
 from mpi4py import MPI
 
 

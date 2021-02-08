@@ -19,3 +19,4 @@
 - [Broadcast](module_02_mpi/broadcast.py)
 - [Scatter, Gather](module_02_mpi/scatter_gather.py)
 - [ALLGather](module_02_mpi/all_gather.py)
+- [Reduce](module_02_mpi/reduce.py)

@@ -32,3 +32,12 @@ Scatter a list to all of the workers and gather those values to all ranks.
 ```
 mpirun -n 3 python all_gather.py
 ```
+
+# reduce.py
+
+Scatter a list to all of the workers and reduce those values to rank 0. Note that
+I am switching up the values that are being scattered compared with `scatter_gather.py`.
+
+```
+mpirun -n 3 python reduce.py
+```

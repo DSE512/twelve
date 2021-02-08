@@ -24,3 +24,11 @@ Scatter a list to all of the workers and gather it back to rank 0.
 ```
 mpirun -n 3 python scatter_gather.py
 ```
+
+# all_gather.py
+
+Scatter a list to all of the workers and gather those values to all ranks.
+
+```
+mpirun -n 3 python all_gather.py
+```

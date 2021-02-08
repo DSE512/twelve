@@ -20,3 +20,4 @@
 - [Scatter, Gather](module_02_mpi/scatter_gather.py)
 - [ALLGather](module_02_mpi/all_gather.py)
 - [Reduce](module_02_mpi/reduce.py)
+- [ALLReduce](module_02_mpi/all_reduce.py)

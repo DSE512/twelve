@@ -1,9 +1,12 @@
 """
-scatter_pather.py
+all_pather.py
 
 Scatter values to all ranks and gather them back! Note that
 the number of values to be scattered equal the number of ranks
 that you are scattering to.
+
+Usage:
+mpirun -n <procs> python all_gather.py
 """
 import numpy as np
 

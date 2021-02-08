@@ -17,3 +17,4 @@
 # MPI Programming
 - [Hello World!](module_02_mpi/hello.py)
 - [Broadcast](module_02_mpi/broadcast.py)
+- [Scatter, Gather](module_02_mpi/scatter_gather.py)

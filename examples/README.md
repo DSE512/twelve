@@ -2,7 +2,7 @@
 
 ## Table of Contents
 - [Intro. to Parallel Programming](#Intro)
-- [MPI Programming](#MPI Programming)
+- [MPI Programming](##MPI)
 
 # Introduction to Parallel Programming
 - [Serial Python](module_01_parallel/serial.py)

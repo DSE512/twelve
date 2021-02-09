@@ -1,12 +1,14 @@
-#PBS -S /bin/bash
-#PBS -A ACF-UTK0150
+#!/bin/sh
+
+#PBS -S /bin/sh
 #PBS -N broadcast
 #PBS -M myoung44@utk.edu
-#PBS -o job-out.txt
-#PBS -e job-err.txt
-#PBS -l nodes=1
-#PBS -l partition=general:beacon
-#PBS -l walltime=00:02:00
+#PBS -m abe
+#PBS -A ACF-UTK0150
+#PBS -j oe
+#PBS -l nodes=1:ppn=1
+#PBS -l walltime=00:10:00
+#PBS -l qos=condo
 
 module load anaconda3
 module load mpi4py
@@ -17,4 +19,4 @@ TWELVE=/lustre/haven/proj/UTK0150/yngtodd/src/python/twelve
 EXAMPLES=$TWELVE/examples/module_02_mpi
 PYMODULE=$EXAMPLES/broadcast.py
 
-mpirun -n 8 python ${PYMODULE}
+mpirun -n 4 python ${PYMODULE}

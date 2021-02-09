@@ -1,18 +1,17 @@
 #PBS -S /bin/bash
-#PBS -A ACF-UTHSC0001
-#PBS -m yngtodd
+#PBS -A ACF-UTK0150
+#PBS -N broadcast
 #PBS -M myoung44@utk.edu
-#PBS -o $HOME/job_data/job-out.txt
-#PBS -e $HOME/job_data/job-err.txt
+#PBS -o job-out.txt
+#PBS -e job-err.txt
 #PBS -l nodes=1
 #PBS -l partition=general:beacon
-#PBS -l qos=long
 #PBS -l walltime=00:02:00
 
-mdule load anaconda3
-conda activate /nics/b/home/myoung44/env/py
+module load anaconda3
+module load mpi4py
 
-cd $PBS_O_WORKDIR
+conda activate /nics/b/home/myoung44/env/py
 
 TWELVE=/lustre/haven/proj/UTK0150/yngtodd/src/python/twelve
 EXAMPLES=$TWELVE/examples/module_02_mpi

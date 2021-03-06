@@ -103,7 +103,7 @@ class Kmeans:
 
         cluster_assignments = self.cluster_assignments(data, clusters)
 
-        return cluster_assignments
+        return cluster_assignments, centroids
 
 
 if __name__ == "__main__":
@@ -113,7 +113,7 @@ if __name__ == "__main__":
     print(f"blobs: {data.shape}")
 
     model = Kmeans(k=10)
-    assignments = model.predict(data)
+    assignments, _ = model.predict(data)
 
     print(assignments.shape)
     print(assignments)

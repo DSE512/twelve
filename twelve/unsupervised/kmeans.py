@@ -31,5 +31,93 @@ class Kmeans:
         Randomly choose points in our data to be the
         positions of our centroids
         """
-        #TODO(Todd): write this
-        raise NotImplementedError()
+        num_samples, _ = data.shape
+
+        idx = np.random.choice(
+            num_samples, (self.k,), replace=False
+        )
+
+        return data[idx, :]
+
+    def nearest_centroid(self, sample, centroids):
+        """Find the nearest centroid for a data point
+
+        Args:
+            sample: np.array of shape (1, num_features),
+                    a single data point
+            centroids: current centroid positions
+        """
+        nearest = None
+        nearest_distance = np.inf
+
+        for idx, centroid in enumerate(centroids):
+            distance = euclidean_distance(sample, centroid)
+            if distance < nearest_distance:
+                nearest = idx
+                nearest_distance = distance
+
+        print(f"nearest cluster: {nearest}")
+        return nearest
+
+    def assign_clusters(self, data, centroids):
+        """Assign the data to the nearest centroids"""
+        num_samples, _ = data.shape
+
+        clusters = [[] for _ in range(self.k)]
+
+        for idx, sample in enumerate(data):
+            print(f"Assigning data {idx} to cluster")
+            nearest_centroid = self.nearest_centroid(sample, centroids)
+            clusters[nearest_centroid].append(idx)
+
+        return clusters
+
+    def cluster_assignments(self, data, clusters):
+        """Get which cluster each sample is assigned to"""
+        num_samples, _ = data.shape
+
+        assignments = np.zeros(num_samples)
+        for idx, cluster in enumerate(clusters):
+            for sample in cluster:
+                assignments[sample] = idx
+
+        return assignments
+
+    def update_centroids(self, data, clusters):
+        """Set the centroids to be the mean of the samples in each cluster"""
+        _, num_features = data.shape
+
+        centroids = np.zeros((self.k, num_features))
+
+        for idx, cluster in enumerate(clusters):
+            centroid = np.mean(data[cluster], axis=0)
+            centroids[idx] = centroid
+
+        return centroids
+
+    def predict(self, data):
+        """K-means clustering over data"""
+        centroids = self.initialize_centroids(data)
+
+        for idx in range(self.max_iterations):
+            print(f"iteration: {idx}")
+            clusters = self.assign_clusters(data, centroids)
+            centroids = self.update_centroids(data, clusters)
+
+        cluster_assignments = self.cluster_assignments(data, clusters)
+
+        return cluster_assignments
+
+
+if __name__ == "__main__":
+    from sklearn import datasets
+
+    data, _ = datasets.make_blobs(n_features=5)
+    print(f"blobs: {data.shape}")
+
+    model = Kmeans(k=3)
+    assignments = model.predict(data)
+
+    print(assignments.shape)
+    print(assignments)
+

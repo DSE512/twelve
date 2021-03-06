@@ -26,7 +26,7 @@ def main():
     banner()
 
     if rank == 0:
-        data = [x for x in range(size)]
+        data = (x for x in range(size))
         print(f"\nRank {rank} scattering {data}")
     else:
         data = None

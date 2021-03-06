@@ -21,9 +21,9 @@ def euclidean_distance(x1, x2):
 class Kmeans:
     """Clustering around k centroids"""
 
-    def __init__(self, k=2, max_iterations=100):
+    def __init__(self, k=2, num_iterations=100):
         self.k = k
-        self.max_iterations = max_iterations
+        self.num_iterations = num_iterations
 
     def initialize_centroids(self, data):
         """Randomly initialize centroids
@@ -51,12 +51,13 @@ class Kmeans:
         nearest_distance = np.inf
 
         for idx, centroid in enumerate(centroids):
+            print(f"Distance from centroid: {idx}")
             distance = euclidean_distance(sample, centroid)
             if distance < nearest_distance:
                 nearest = idx
+                print(f"nearest cluster: {nearest}")
                 nearest_distance = distance
 
-        print(f"nearest cluster: {nearest}")
         return nearest
 
     def assign_clusters(self, data, centroids):
@@ -91,6 +92,7 @@ class Kmeans:
 
         for idx, cluster in enumerate(clusters):
             centroid = np.mean(data[cluster], axis=0)
+            print(f"New centroid:\n{centroid}")
             centroids[idx] = centroid
 
         return centroids
@@ -99,8 +101,7 @@ class Kmeans:
         """K-means clustering over data"""
         centroids = self.initialize_centroids(data)
 
-        for idx in range(self.max_iterations):
-            print(f"iteration: {idx}")
+        for idx in range(self.num_iterations):
             clusters = self.assign_clusters(data, centroids)
             centroids = self.update_centroids(data, clusters)
 
@@ -112,10 +113,10 @@ class Kmeans:
 if __name__ == "__main__":
     from sklearn import datasets
 
-    data, _ = datasets.make_blobs(n_features=5)
+    data, _ = datasets.make_blobs(n_features=10)
     print(f"blobs: {data.shape}")
 
-    model = Kmeans(k=3)
+    model = Kmeans(k=10)
     assignments = model.predict(data)
 
     print(assignments.shape)

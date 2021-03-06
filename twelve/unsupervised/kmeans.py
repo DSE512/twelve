@@ -15,7 +15,7 @@ def euclidean_distance(x1, x2):
         are affected. Instead, you should use the 
         regular Euclidean distance.
     """
-    return np.sum(np.square(x1, x2))
+    return np.sum(np.square(x1 - x2))
 
 
 class Kmeans:
@@ -51,11 +51,9 @@ class Kmeans:
         nearest_distance = np.inf
 
         for idx, centroid in enumerate(centroids):
-            print(f"Distance from centroid: {idx}")
             distance = euclidean_distance(sample, centroid)
             if distance < nearest_distance:
                 nearest = idx
-                print(f"nearest cluster: {nearest}")
                 nearest_distance = distance
 
         return nearest
@@ -67,7 +65,6 @@ class Kmeans:
         clusters = [[] for _ in range(self.k)]
 
         for idx, sample in enumerate(data):
-            print(f"Assigning data {idx} to cluster")
             nearest_centroid = self.nearest_centroid(sample, centroids)
             clusters[nearest_centroid].append(idx)
 
@@ -92,7 +89,6 @@ class Kmeans:
 
         for idx, cluster in enumerate(clusters):
             centroid = np.mean(data[cluster], axis=0)
-            print(f"New centroid:\n{centroid}")
             centroids[idx] = centroid
 
         return centroids

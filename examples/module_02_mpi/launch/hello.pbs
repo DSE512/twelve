@@ -1,20 +1,24 @@
 #!/bin/bash
 
 #PBS -S /bin/bash
-#PBS -N broadcast
+#PBS -N mpi_hello!
 #PBS -M myoung44@utk.edu
 #PBS -m abe
 #PBS -A ACF-UTK0150
-#PBS -o broadcast.out
-#PBS -e broadcast.err
-#PBS -l nodes=1:ppn=4
+#PBS -o logs/hello.out
+#PBS -e logs/hello.err
+#PBS -v PYENV
+#PBS -l nodes=1:ppn=20
 #PBS -l walltime=00:10:00
 #PBS -l qos=condo
 
 module load anaconda3
+conda activate $PYENV
+
+echo $PYENV
 
 TWELVE=/lustre/haven/proj/UTK0150/yngtodd/src/python/twelve
 EXAMPLES=$TWELVE/examples/module_02_mpi
-PYMODULE=$EXAMPLES/broadcast.py
+PYMODULE=$EXAMPLES/hello.py
 
-mpirun -n 4 python ${PYMODULE}
+mpirun -n 8 python ${PYMODULE}

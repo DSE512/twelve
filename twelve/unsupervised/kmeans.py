@@ -1,3 +1,4 @@
+import torch
 import numpy as np
 
 
@@ -104,6 +105,16 @@ class Kmeans:
         cluster_assignments = self.cluster_assignments(data, clusters)
 
         return cluster_assignments, centroids
+
+
+def kmeans_save(data, target, predictions, centroids, path):
+    """Save both the data and our predictions"""
+    torch.save({
+        "data": data,
+        "target": target,
+        "predictions": predictions,
+        "centroids": centroids
+    }, path)
 
 
 if __name__ == "__main__":

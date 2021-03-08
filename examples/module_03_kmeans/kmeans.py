@@ -4,7 +4,10 @@ from mpi4py import MPI
 from pathlib import Path
 from sklearn import datasets
 from argparse import ArgumentParser
-from twelve.unsupervised.kmeans import Kmeans, kmeans_save
+
+from twelve.unsupervised import (
+    kmeans_save, KmeansDistributed
+)
 
 
 def parse_args():
@@ -60,7 +63,7 @@ def main():
     if args.verbose:
         log(f"Received data, labels of shape {x_subset.shape}, {y_subset.shape}", rank)
 
-    model = Kmeans(args.k)
+    model = KmeansDistributed(comm, rank, args.k)
     predictions, centroids = model.predict(x_subset)
 
     kmeans_save(
@@ -68,7 +71,7 @@ def main():
         target=y_subset,
         predictions=predictions,
         centroids=centroids,
-        path=Path(args.savepath).joinpath(f'save_rank{rank}')
+        path=Path(args.savepath).joinpath(f'save_rank{rank}.pt')
     )
 
 

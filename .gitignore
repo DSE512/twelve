@@ -105,4 +105,4 @@ ENV/
 .vscode/
 .DS_Store
 
-save*
+*.pt

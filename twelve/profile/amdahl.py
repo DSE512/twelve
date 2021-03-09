@@ -1,11 +1,11 @@
 def amdahls_law(p, s):
     """Speedup relative to proportion parallel
 
-    Amdahl's Law gives an idealized speed up we 
+    Amdahl's Law gives an idealized speedup we 
     can expect for an algorithm given the proportion
     that algorithm can be parallelized and the speed
     we gain from that parallelization. The best case
-    scenario is that the speed up, `s`, is equal to
+    scenario is that the speedup, `s`, is equal to
     the number of processors available.
 
     Args:

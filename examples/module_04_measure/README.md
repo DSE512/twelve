@@ -8,9 +8,11 @@ case. We need to check ourselves!
 ## Visualizing Our Execution
 
 [Viztracer](https://github.com/gaogaotiantian/viztracer)
+
 [SnakeViz](https://jiffyclub.github.io/snakeviz/)
 
 ## Profiling
 
 [cProfile](https://docs.python.org/3/library/profile.html)
+
 [Notes from NERSC](https://docs.nersc.gov/development/languages/python/profiling-debugging-python/)

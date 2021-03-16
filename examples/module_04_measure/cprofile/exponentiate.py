@@ -1,12 +1,9 @@
-import cProfile
-
-
 def build_list():
-    return [x for x in range(1_000)]
+    return [x for x in range(1_000_000)]
 
 
 def exponentiate(arry, power):
-    return [x**power for x in arry]
+    return [x**power for x in arry] 
 
 
 def main():
@@ -15,5 +12,14 @@ def main():
 
 
 if __name__ == '__main__':
-    cProfile.run('main()')
+    import cProfile, pstats
+
+    profiler = cProfile.Profile()
+    profiler.enable()
+
+    main()
+
+    profiler.disable()
+    stats = pstats.Stats(profiler).sort_stats('cumtime')
+    stats.print_stats()   
 

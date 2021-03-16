@@ -1,4 +1,5 @@
 from twelve.data import Images
+from viztracer import VizTracer
 
 
 def main():

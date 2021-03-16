@@ -12,7 +12,7 @@ def load_boston_data():
 def build_model():
     hparams = {
         'n_estimators': 500,
-        'max_depth': 4,
+        'max_depth': 5,
         'min_samples_split': 5,
         'learning_rate': 0.01,
         'loss': 'ls'
@@ -40,4 +40,14 @@ def main():
 
 
 if __name__=="__main__":
+    import cProfile, pstats 
+
+    profiler = cProfile.Profile()
+    profiler.enable()
+
     main()
+
+    profiler.disable()
+    stats = pstats.Stats(profiler).sort_stats('tottime')
+
+    stats.print_stats()   

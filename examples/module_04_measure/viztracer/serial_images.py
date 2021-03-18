@@ -12,6 +12,5 @@ def main():
     tracer.save("viztrace_results.html")
 
 
-
 if __name__=="__main__":
     main()

@@ -23,12 +23,18 @@ def build_model():
     return model
 
 
-def main():
+def load_data():
     data, target = load_boston_data()
 
     x_train, x_valid, y_train, y_valid = train_test_split(
         data, target, test_size=0.33, random_state=42
     )
+
+    return x_train, x_valid, y_train, y_valid
+
+
+def main():
+    x_train, x_valid, y_train, y_valid = load_data()
 
     model = build_model()
 

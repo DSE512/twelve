@@ -1,5 +1,7 @@
 import numpy as np
-import torch.nn as nn
+
+from numba import jit, jitclass
+from numba import float32
 
 
 class Sigmoid:
@@ -13,7 +15,7 @@ class Sigmoid:
     """
     def forward(self, x):
         return 1 / (1 + np.exp(-x))
-    
+   
     def backward(self, x):
         """Derivative of the Sigmoid function."""
         return x * (1 - x)
@@ -28,14 +30,14 @@ class MultiLayerPerceptron:
         self.W2 = np.random.randn(hidden_size, num_classes)
         # Activation function
         self.sigmoid = Sigmoid()
-        
+    
     def forward(self, x):
         self.z = np.matmul(x, self.W1)
         self.z2 = self.sigmoid.forward(self.z)
         self.z3 = np.matmul(self.z2, self.W2)
         out = self.sigmoid.forward(self.z3)
         return out
-    
+
     def backward(self, x, y, logits):
         self.error = y - logits
         self.logits_delta = self.error * self.sigmoid.backward(logits)
@@ -43,7 +45,7 @@ class MultiLayerPerceptron:
         self.z2_delta = self.z2_error * self.sigmoid.backward(self.z2)
         self.W1 += np.matmul(np.transpose(x), self.z2_delta)
         self.W2 += np.matmul(np.transpose(self.z2), self.logits_delta)
-        
+    
     def train(self, x, y):
         logits = self.forward(x)
         self.backward(x, y, logits)
@@ -81,11 +83,7 @@ def main():
     # negative class by taking 1 - logits.
     model = MultiLayerPerceptron(input_size=2, hidden_size=3, num_classes=1)
      
-    criterion = nn.BCELoss()
-
-    # Train the model for 2000 epochs.
-    # Each epoch will see every sample of data.
-    for i in range(2000):
+    for i in range(20000):
         if i % 100 == 0:
             logits = model.forward(x)
             loss = cross_entropy(logits, y)

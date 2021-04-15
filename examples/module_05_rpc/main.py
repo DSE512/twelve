@@ -74,9 +74,9 @@ class ClassifierShard(BaseRPC):
 
     def forward(self, x_rref):
         x = x_rref.to_here().to(self.device)
-        x = torch.flatten(x, 1)
 
         with self._lock:
+            x = torch.flatten(x, 1)
             out = self.classifier(x)
 
         return out.cpu()

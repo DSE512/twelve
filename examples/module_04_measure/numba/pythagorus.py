@@ -1,15 +1,15 @@
 import time
 import math
 
-from numba import jit
+from numba import jit, njit
 from contextlib import contextmanager
 
 
-@jit
+@njit(cache=True)
 def square(x):
     return x ** 2
 
-@jit
+@jit(nopython=True, cache=True)
 def pythagorean_theorem(x, y):
     return math.sqrt(square(x) + square(y))
 

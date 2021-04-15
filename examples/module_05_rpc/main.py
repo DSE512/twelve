@@ -153,7 +153,12 @@ def run_main_process(split_size):
         # retrieved using the context_id by the distributed optimizer.
         with dist_autograd.context() as context_id:
             outputs = model(inputs)
-            dist_autograd.backward(context_id, [loss_fn(outputs, labels)])
+
+            dist_autograd.backward(
+                context_id, 
+                [loss_fn(outputs, labels)]
+            )
+
             opt.step(context_id)
 
 
@@ -201,6 +206,4 @@ if __name__=="__main__":
         tok = time.perf_counter()
 
         print(f"number of splits = {num_split}, execution time = {tok - tik}")
-
-
 

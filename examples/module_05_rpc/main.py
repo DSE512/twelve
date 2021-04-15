@@ -35,7 +35,7 @@ class BaseRPC(nn.Module):
 class ConvShard(BaseRPC):
     """The early part of our network - convolutions"""
 
-    def __init__(self, device, *args, **kwargs):
+    def __init__(self, device):
         super(ConvShard, self).__init__()
 
         self.device = device
@@ -60,7 +60,7 @@ class ConvShard(BaseRPC):
 class ClassifierShard(BaseRPC):
     """Second half of our network - classifier"""
 
-    def __init__(self, device, *args, **kwargs):
+    def __init__(self, device):
         super(ClassifierShard, self).__init__()
 
         self.device = device
@@ -85,7 +85,7 @@ class ClassifierShard(BaseRPC):
 class DistCNN(nn.Module):
     """Combine the two shards of our model"""
 
-    def __init__(self, split_size, workers, *args, **kwargs):
+    def __init__(self, split_size, workers):
         super().__init__()
 
         self.split_size = split_size
@@ -93,14 +93,13 @@ class DistCNN(nn.Module):
         self.p1_rref = rpc.remote(
             workers[0],
             ConvShard,
-            args = ("cuda:0",),
+            args = ("cuda:0",)
         )
 
         self.p2_rref = rpc.remote(
             workers[1],
             ClassifierShard,
-            args = ("cuda:1",) + args,
-            kwargs = kwargs
+            args = ("cuda:1",)
         )
 
     def forward(self, xs):

@@ -10,24 +10,24 @@ import torch.multiprocessing as mp
 import torch.distributed.rpc as rpc
 import torch.distributed.autograd as dist_autograd
 
-from functools immport wraps
+from functools import wraps
 from torch.distributed.rpc import RRef
 from torch.distributed.optim import DistributedOptimizer
 
 
+image_w = 28
+image_h = 28
 num_batches = 3
+num_classes = 10
 batch_size = 120
-image_w = 128
-image_h = 128
 
 
 class BaseRPC(nn.Module):
     """Base module to get RRefs"""
 
-    def __init__():
-        super().__init__()
+    def __init__(self):
+        super(BaseRPC, self).__init__()
         self._lock = threading.Lock()
-        self._block = block
 
     def parameter_rrefs(self):
         return [RRef(p) for p in self.parameters()]
@@ -36,8 +36,8 @@ class BaseRPC(nn.Module):
 class ConvShard(BaseRPC):
     """The early part of our network - convolutions"""
 
-    def __init__(self):
-        super().__init__(device)
+    def __init__(self, device, *args, **kwargs):
+        super(ConvShard, self).__init__()
 
         self.device = device
 
@@ -61,15 +61,15 @@ class ConvShard(BaseRPC):
 class ClassifierShard(BaseRPC):
     """Second half of our network - classifier"""
 
-    def __init__(self):
-        super().__init__(device)
+    def __init__(self, device, *args, **kwargs):
+        super(ClassifierShard, self).__init__()
 
         self.device = device
 
         self.classifier = nn.Sequential(
-            nn.Linear(9216, 128)
+            nn.Linear(9216, 128),
             nn.ReLU(),
-            nn.Linear(128, 10)
+            nn.Linear(128, 10),
             nn.LogSoftmax(dim=1)
         ).to(device)
 
@@ -78,7 +78,7 @@ class ClassifierShard(BaseRPC):
         x = torch.flatten(x, 1)
 
         with self._lock:
-            out = self.classifer(x)
+            out = self.classifier(x)
 
         return out.cpu()
 
@@ -86,7 +86,7 @@ class ClassifierShard(BaseRPC):
 class DistCNN(nn.Module):
     """Combine the two shards of our model"""
 
-    def __init__(self, split_size, workers):
+    def __init__(self, split_size, workers, *args, **kwargs):
         super().__init__()
 
         self.split_size = split_size
@@ -99,11 +99,12 @@ class DistCNN(nn.Module):
 
         self.p2_rref = rpc.remote(
             workers[1],
-            ClassiferShard,
-            args = ("cuda:1",),
+            ClassifierShard,
+            args = ("cuda:1",) + args,
+            kwargs = kwargs
         )
 
-    def forward(self, x):
+    def forward(self, xs):
         out_futures = []
         for x in iter(xs.split(self.split_size, dim=0)):
             x_rref = RRef(x)
@@ -144,7 +145,7 @@ def run_main_process(split_size):
     for i in range(num_batches):
         print(f"Processing batch {i}")
         # generate random inputs and labels
-        inputs = torch.randn(batch_size, 3, image_w, image_h)
+        inputs = torch.randn(batch_size, 1, image_w, image_h)
         labels = torch.zeros(batch_size, num_classes) \
                       .scatter_(1, one_hot_indices, 1)
 
@@ -155,7 +156,7 @@ def run_main_process(split_size):
             outputs = model(inputs)
 
             dist_autograd.backward(
-                context_id, 
+                context_id,
                 [loss_fn(outputs, labels)]
             )
 
@@ -177,7 +178,7 @@ def run_worker(rank, world_size, num_split):
             world_size=world_size,
             rpc_backend_options=options
         )
-        run_master(num_split)
+        run_main_process(num_split)
     else:
         rpc.init_rpc(
             f"worker{rank}",
@@ -197,9 +198,9 @@ if __name__=="__main__":
         tik = time.perf_counter()
 
         mp.spawn(
-            run_worker, 
-            args=(world_size, num_split), 
-            nprocs=world_size, 
+            run_worker,
+            args=(world_size, num_split),
+            nprocs=world_size,
             join=True
         )
 
